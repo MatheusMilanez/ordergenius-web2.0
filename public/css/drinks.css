@@ -1,0 +1,62 @@
+
+body{
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding: 0;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h2{
+    display: flex;
+    justify-content:center;
+    color: black;
+}
+form{
+    height: 100%;
+    width: 380px;
+    background-color: transparent;
+    border-radius: 40px;
+    
+
+}
+
+form div {
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+label {
+    justify-content: center;
+    font-weight: bold;
+    text-align:center;
+    margin-top: 24px;
+    color: white;
+}
+
+button{
+    width: 214px;
+    height: 68px;
+    border: none;
+    border-radius: 40px;
+    font-family:'Times New Roman', Times, serif;
+    font-size:large;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin: 10px;
+    background-color:#B1131F;
+    color: black;
+}
+
+
+.div_bebidas{
+    border: solid red; /* Borda vermelha sólida por padrão */
+    border-width: 1px; /* Linha fina */
+    border-radius: 10px;   
+}
+

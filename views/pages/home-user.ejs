@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem vindo</title>
+    <link rel="stylesheet" href="/public/css/home-user.css">
+    <link rel="stylesheet" href="/public/css/reset.css">
+</head>
+<body>
+    <main class="container">
+        <div class="title-container">
+            <h3 class="title">Bem-vindo ao Canto do Sabor!</h3>
+            <h3 class="title">Aproveite nossos pratos e drinks especiais!</h3>  
+        </div> <!--title-container-->
+
+        <div class="menu-container">
+            <div class="option dish-and-snack" onclick="location.href='/<%= idTable %>/dish-and-snack'">
+                <img class="img-position" src="/Tela TCC/Imagens_tcc/garfo e faca.png" /> 
+                <p class="botao_pratos">
+                    Pratos e<br>petiscos
+                </p>
+            </div><!--dish-and-snack-option--> 
+
+            <div class="option beverage" onclick="location.href='/<%= idTable %>/drinks'">
+                <img class="img-position" src="/Tela TCC/Imagens_tcc/bebidas.png" /> 
+                <p class="botao_bebidas">
+                    Bebidas
+                </p>
+            </div>  <!--beverage-option-->   
+
+            <div class="option tables">
+                <img class="img-position" src="/Tela TCC/Imagens_tcc/comanda.png" /> 
+                <p class="botao_mesas">
+                    Comanda
+                </p>
+            </div> <!--tables-option-->  
+        </div><!--menu-container-->  
+    </main>
+</body>
+</html>

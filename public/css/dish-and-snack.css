@@ -1,0 +1,105 @@
+
+body{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+h2{
+    display: flex;
+    justify-content:center;
+    color: black;
+}
+form {
+    width: 380px;
+    background-color: transparent;
+    border-radius: 40px;
+}
+
+form div  {
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+label {
+    justify-content: center;
+    font-weight: bold;
+    text-align:center;
+    margin-top: 24px;
+    color: white;
+}
+
+button {
+    width: 214px;
+    height: 68px;
+    border: none;
+    border-radius: 40px;
+    font-family:'Times New Roman', Times, serif;
+    font-size:large;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin: 10px;
+    background-color:#B1131F;
+    color: black;
+    cursor: pointer;
+}
+
+
+
+
+.div_prat_e_peti{
+    border: solid red; /* Borda vermelha sólida por padrão */
+    border-width: 1px; /* Linha fina */
+    border-radius: 10px;   
+}
+
+
+/* Responsivo para telas menores que 720px */
+@media screen and (max-width: 720px) {
+    body{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    form {
+        width: 300px;
+    }
+
+
+    button {
+        width: 180px;
+        height: 60px;
+        font-size: medium;
+    }
+
+    label {
+        font-size: 16px;
+        margin-top: 20px;
+    }
+}
+
+/* Responsivo para telas menores que 400px */
+@media screen and (max-width: 400px) {
+    form {
+        width: 260px;
+    }
+
+    button {
+        width: 160px;
+        height: 50px;
+        font-size: small;
+    }
+
+    label {
+        font-size: 14px;
+        margin-top: 16px;
+    }
+}
