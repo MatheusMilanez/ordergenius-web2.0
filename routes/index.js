@@ -13,6 +13,19 @@ async function getTables() {
     }
 }
 
+// Função para obter os pedidos de uma mesa específica
+async function getOrders(idTable) {
+    try {
+        const response = await axios.get(`http://localhost:3000/tables/${idTable}/orders`);
+        console.log("getOrders:",response.data.orders)
+        return response.data.orders;
+    } catch (error) {
+        console.error(`Erro ao obter os pedidos para a mesa ${idTable}:`, error);
+        return [];
+    }
+}
+
+
 // Função para definir as rotas
 async function defineRoutes() {
     const tables = await getTables();
@@ -34,28 +47,45 @@ async function defineRoutes() {
             });
 
             // Rota menu Petiscos
-            router.get(`/${idTable}/dish-and-snack`, async (req, res) => {
+            router.get(`/${idTable}/menu-dish-and-snack`, async (req, res) => {
                 try {
                     const response = await axios.get('http://localhost:3000/');
                     const data = response.data;
-                    res.render('pages/dish-and-snack', { data, idTable });
+                    res.render('pages/menu-dish-and-snack', { data, idTable });
                 } catch (error) {
                     console.log(error);
-                    res.render('pages/dish-and-snack', { data: null, idTable });
+                    res.render('pages/menu-dish-and-snack', { data: null, idTable });
                 }
             });
 
             // Rotas bebidas
-            router.get(`/${idTable}/drinks`, async (req, res) => {
+            router.get(`/${idTable}/menu-drinks`, async (req, res) => {
                 try {
                     const response = await axios.get('http://localhost:3000/');
                     const data = response.data;
-                    res.render('pages/drinks', { data, idTable });
+                    res.render('pages/menu-drinks', { data, idTable });
                 } catch (error) {
                     console.log(error);
-                    res.render('pages/drinks', { data: null, idTable });
+                    res.render('pages/menu-drinks', { data: null, idTable });
                 }
             });
+
+            // Rota para a página de comandos
+            router.get(`/${idTable}/menu-commands`, async (req, res) => {
+                try {
+                    const orders = await getOrders(idTable);
+                    console.log("Lista de pedidos",orders)
+                    res.render('pages/menu-commands', { orders, idTable });
+                } catch (error) {
+                    console.log(error);
+                    res.render('pages/menu-commands', { orders: [], idTable });
+                }
+            });
+
+
+
+
+
         } else {
             console.log("Não existe essa mesa");
         }
