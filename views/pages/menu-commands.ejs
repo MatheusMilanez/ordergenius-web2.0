@@ -16,6 +16,7 @@
         <div class="grid-command item">
             <h3>Itens</h3>
             <h3>Valor</h3>
+            <h3>Quantidade</h3>
         </div>
         <div class="list-orders">
             <% if (Array.isArray(orders) && orders.length > 0) { %>
@@ -29,6 +30,7 @@
                                 Preço não disponível
                             <% } %>
                         </li>
+                        <li class="li quantity"><%= order.quantity %></li>
                     </ul>
                 <% }) %>
             <% } else { %>
