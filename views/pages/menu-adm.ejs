@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/menu-adm.css">
+    <link rel="shortcut icon" type="menu.ico" href="/imgs/logo icone comida e bebida.png" />
+    <title>Menu administrador</title>
+</head>
+<body>
+    
+<form method="POST" action="/" id="formulario">
+    <h1> O que deseja acessar :</h1>
+
+    <div>
+        <button type="button" class="botao_mesas" onclick="window.location.href = '/table-adm'">
+            <img class="mesa" src="/imgs/mesa_render.png" /> 
+            <label class="mesas">Mesas</label>
+        </button>
+    </div>
+
+    <div>
+    <button type="button" class="botao_produtos" onclick="window.location.href = '/list-product'">
+        <img class="produtos" src="/imgs/produtos_render.png" />
+        <label class="produtos" for="produtos">Produtos</label>
+    </button>
+    </div>
+
+    <div>
+    <button class="botao_qrcode">
+        <img class="qrcode" src="/imgs/QRcode_render.png" />
+        <label class="produtos" for="produtos">QRcode</label>
+    </button>    
+    </div>
+
+
+  <div>  
+    <button type="button" class="botao_sair" onclick="window.location.href = '/'">Sair</button>
+  </div> 
+
+    </form>
+</body>
+</html>

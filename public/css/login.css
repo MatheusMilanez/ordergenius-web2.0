@@ -1,0 +1,20 @@
+html, body{
+    height: 100vh;
+    align-items: center;
+}
+
+.form-container{
+    max-width: 300px;
+    padding: 16px ;
+}
+
+img{
+    display: block;
+    margin: auto;
+}
+
+@media (max-widht: 1204px) {
+.form-container{
+    display: mone;
+    }
+}

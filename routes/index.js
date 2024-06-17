@@ -82,6 +82,58 @@ async function defineRoutes() {
                 }
             });
 
+            //ROTAS DAS TELAS DO ADMINISTRADOR
+
+            // Rota para a página de LOGIN
+            router.get(`/`, (req, res) => {
+                try {
+                    res.render('pages/login');
+                } catch (error) {
+                    console.log(error);
+                    res.render('pages/login');
+                }
+            });
+
+            router.get(`/menu-adm`, (req, res) => {
+                try {
+                    res.render('pages/menu-adm');
+                } catch (error) {
+                    console.log(error);
+                    res.render('pages/menu-adm');
+                }
+            });
+
+            router.get(`/table-adm`, (req, res) => {
+                try {
+                    res.render('pages/table-adm');
+                } catch (error) {
+                    console.log(error);
+                    res.render('pages/table-adm');
+                }
+            });
+
+            router.get(`/list-product`, (req, res) => {
+                try {
+                    res.render('pages/list-product');
+                } catch (error) {
+                    console.log(error);
+                    res.render('pages/list-product');
+                }
+            });
+
+
+            
+            router.get(`/product-adm`, (req, res) => {
+                try {
+                    res.render('pages/product-adm');
+                } catch (error) {
+                    console.log(error);
+                    res.render('pages/product-adm');
+                }
+            });
+
+
+  
 
 
 

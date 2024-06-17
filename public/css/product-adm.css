@@ -1,0 +1,170 @@
+body{
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display:flex;
+    justify-content: center;
+    
+}
+
+form {
+    height: 100%;
+    width: 380px;
+    background-color: transparent;
+    border-radius: 40px;
+}
+
+h3{
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    color: black;
+}
+
+div {
+    display: flex;
+    justify-content: center;
+}
+
+label
+{
+    justify-content:space-evenly;
+    font-weight: bold;
+    text-align:center;
+    margin: 10px;
+}
+
+input,
+select{
+    border-radius: 10px;
+    width: 300px;
+    height: 26px; 
+    margin: 6px;
+    cursor:pointer;
+    border-color:#f40000;
+}
+
+input:hover{
+    background-color: whitesmoke;
+}
+
+
+.img_bt_slv{
+    width: 40px;
+    height: 40px;
+}
+
+.img_bt_can{
+    width: 40px;
+    height: 40px;
+}
+button{
+   
+    border: none;
+    border-radius: 40px;
+    font-family:'Times New Roman', Times, serif;
+    font-size:large;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding: 10px 20px;
+    margin: 10px 0;
+    background-color: white;
+    color: black;
+    cursor:pointer
+    } 
+
+ 
+ .bt_cancelar{
+    width: 160px;
+    height: 68px;
+    border-radius: 40px;
+    border:none;
+    margin: 20px;
+    font-family:'Times New Roman', Times, serif;
+    font-size:large;
+    font-weight: bold;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    color: black;
+    background-color: white;
+ }
+ 
+ .bt_cancelar:hover{
+    background-color: #f40000;
+    color: #FFFFFF;
+}
+
+ .bt_salvar{
+    width: 160px;
+    height: 68px;
+    border-radius: 40px;
+    border:none;
+    margin: 20px;
+    font-family:'Times New Roman', Times, serif;
+    font-size:large;
+    font-weight: bold;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    color: black;
+    background-color: white;
+    transition: background-color 0.5s ease, color 0.5s ease, transform 0.5s ease;
+   }
+   
+   
+   .bt_salvar:hover{
+       background-color: #198754;
+       color: #FFFFFF;
+   
+   }
+
+   .seta_sair , .botao_sair {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    margin: 20px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: large;
+    font-weight: bold;
+    color: black;
+    background-color: transparent;
+    transition: background-color 0.5s ease, color 0.5s ease, transform 0.5s ease;
+}
+
+.botao_sair:hover {
+    transform: scale(1.2);
+}
+
+@media screen and (max-width: 600px) {
+    form div {
+        width: 90%; /* Ajusta a largura do formulário para telas menores */
+        max-width: none; /* Remove a largura máxima */
+    }
+    input, select {
+        width: 100%; /* Faz com que os inputs ocupem toda a largura do contêiner */
+    }
+    button, .bt_cancelar, .bt_salvar {
+        width: 100%; /* Faz com que os botões ocupem toda a largura do contêiner */
+        margin: 10px 0; /* Adiciona um espaço entre os botões */
+    }
+}
+
+/* Estilos para telas menores que 400px de largura */
+@media screen and (max-width: 400px) {
+    .seta_sair , .botao_sair {
+        width: 30px; /* Reduz o tamanho do botão de saída */
+        height: 30px;
+        font-size: medium; /* Reduz o tamanho da fonte */
+    }
+}
+
+ 
+ 

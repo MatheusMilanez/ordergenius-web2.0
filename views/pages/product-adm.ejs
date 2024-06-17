@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/product-adm.css">
+    <link rel="shortcut icon" type="menu.ico" href="/imgs/icone de menu.ico" />
+    <title>Adicionar produto(s)</title>
+</head>
+
+<body>
+    <form>
+        <button type="button" class="botao_sair" id="botao_sair" onclick="window.location.href = '/list-product'">
+            <img class="seta_sair" id="seta_sair" src="/imgs/Voltar.png">
+        </button>
+        <h3>Dados do produto</h3>
+        <div>
+            <label for="Nome_prod">Nome:</label>
+            <input type="text" name="produto" />
+        </div>
+
+
+        <div>
+            <label for="Categoria" name="Categoria" class="categoria" id="">Categoria:</label>
+            <input type="text" name="Categoria" />
+        </div>
+
+
+        <div>
+            <label for="Nome_prod">Preço:</label>
+            <input type="text" name="preco" />
+        </div>
+
+        <div>
+            <label for="Nome_prod">Quantidade:</label>
+            <input type="number" name="Quantidade" />
+        </div>
+
+
+        <div>
+            <button class="bt_cancelar" type="submit">
+                
+                <label for=" salvar_prod">Cancelar</label>
+            </button>
+            <button class="bt_salvar" type="reset">
+                
+                <label for=" salvar_prod">Salvar</label>
+            </button>
+        </div>
+
+    </form>
+
+</body>
+
+</html>

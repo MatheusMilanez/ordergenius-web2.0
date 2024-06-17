@@ -1,0 +1,92 @@
+body{
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1{
+    display: flex;
+    justify-content:center;
+    color: black;
+}
+form{
+    height: 100%;
+    width: 380px;
+    background-color: transparent;
+    border-radius: 40px;
+}
+
+form div {
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+label {
+    justify-content: center;
+    font-weight: bold;
+    text-align:center;
+    margin: 30px;
+}
+
+button{
+    width: 342px;
+    height: 100px;
+    border: none;
+    border-radius: 40px;
+    font-family:'Times New Roman', Times, serif;
+    font-size:large;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: white;
+    color: black;
+}
+
+button img {
+    width: 55px;
+    height: 55px;
+    margin-top: 15px;
+}
+
+
+button:hover{
+    background-color: #f40000;
+    color: #FFFFFF;
+
+}
+
+
+.botao_sair {
+    width: 159px;
+    height: 68px;
+    border-radius: 20px;
+    border:none;
+    margin: 20px;
+    font-family:'Times New Roman', Times, serif;
+    font-size:large;
+    font-weight: bold;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    color: black;
+    background-color: white;
+
+    transition: background-color 0.5s ease, color 0.5s ease, transform 0.5s ease
+ }
+ 
+ .botao_sair:hover{
+    background-color: red;
+    color:white;
+    transform: scale (1.6)
+    
+}
+ 
