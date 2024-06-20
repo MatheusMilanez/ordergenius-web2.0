@@ -1,0 +1,194 @@
+body{
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form{ 
+    height: 100%;
+    width: 380px;
+    background-color: transparent;
+    border-radius: 40px;
+}
+
+button{
+    width: 100%;
+    height: 100px;
+    border: none;
+    border-radius: 40px;
+    font-family:'Times New Roman', Times, serif;
+    font-size:large;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding: 10px 20px;
+    margin: 10px 0;
+    background-color: white;
+    color: black;
+    cursor:pointer
+    } 
+
+.img_imprimir_qrcode {
+    display: flex;
+    align-items:center;
+    justify-content: center;    
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.botao_imprimir_qrcode {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border: none;
+}
+.botao_imprimir_qrcode:hover{
+    background-color: red;
+    color: white;
+}
+
+.seta_sair , .botao_sair {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    margin: 20px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: large;
+    font-weight: bold;
+    color: black;
+    background-color: transparent;
+    transition: background-color 0.5s ease, color 0.5s ease, transform 0.5s ease;
+}
+
+.botao_sair:hover {
+    transform: scale(1.2);
+}
+
+h3{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+ 
+h4{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+ /* Estilos gerais */
+ .qrcode_list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.qrcode_item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px; /* Ajuste a largura conforme necessário */
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin: 10px 0;
+    cursor: pointer;
+    
+}
+
+.qrcode_item div {
+    margin-right: 20px; /* Espaço entre o texto e a imagem */
+    background-color: transparent;
+    border: none;
+}
+
+.qrcode_item img {
+    max-width: 100px; /* Ajuste conforme necessário */
+    height: auto;
+}
+
+        /* Estilos específicos para impressão */
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact;
+            }
+
+            body, html {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            body {
+                display: block;
+            }
+
+            .qrcode_item {
+                display: block;
+                align-items: center;
+                page-break-inside: auto;
+                page-break-after: recto;
+                margin: 0;
+                padding: 0;
+                background-color: transparent;   
+            }
+
+            .qrcode_item:nth-child(2n) {
+                page-break-after: always;
+                background-color: transparent;  
+            }
+
+            .qrcode_item img {
+                display: block;
+                margin: 10px auto;
+                max-width: 100px;
+                height: auto;
+                background-color: transparent;  
+            }
+
+            .qrcode_list {
+                width: 500px;
+                margin: 0;
+                padding: 0px;
+            }
+
+            .imprimir_qrcode, .botao_sair, h3, h4 {
+                display: none;
+            }
+        }
+   /* Estilos específicos para impressão 
+   @media print {
+    body {
+        display: block;
+    }
+
+    .qrcode_item {
+        display: block;
+        page-break-inside: avoid;
+        page-break-after: always;
+        border:none;
+    }
+
+    .qrcode_item:nth-child(2n) {
+        page-break-after: always;
+    }
+
+    .qrcode_item img {
+        display: block;
+        margin: 10px auto;
+        max-width: 250px;
+        height: auto;
+        border:none;
+    }
+}*/

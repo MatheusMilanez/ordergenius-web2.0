@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <form method="POST" action="" id="formulario">
+    <form id="formulario">
         <div>
             <button type="button" class="botao_sair" id="botao_sair" onclick="window.location.href = '/menu-adm'">
                 <img class="seta_sair" id="seta_sair" src="/imgs/Voltar.png">
@@ -19,16 +19,114 @@
         
         <h3>Menu mesas</h3>
         <div class="adc_mesas" id="adc_mesas">
-            <button class="botao_adc_mesas" id="botao_adc_mesas">
+            <input type="text" id="mesa_name" placeholder="Nome da Mesa">
+            <button type="button" class="botao_adc_mesas" id="botao_adc_mesas">
                 <img class="img_adc_mesa" id="img_adc_mesa" src="/imgs/adicionar.png" />
                 <label class="txt_adicionar_mesas" for="mesas">Adicionar Mesa(s)</label>
             </button>
         </div>
         <div>
-        <h4> Lista de mesas</h4> 
+            <h4>Lista de mesas</h4> 
+            <table id="table_list">
+                <thead>
+                    <tr>
+                        <th>Mesa</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- As mesas serão listadas aqui -->
+                </tbody>
+            </table>
         </div>
-
     </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tableList = document.querySelector('#table_list tbody');
+            const botaoAdcMesas = document.getElementById('botao_adc_mesas');
+            const mesaNameInput = document.getElementById('mesa_name');
+
+            const listarMesas = async () => {
+                try {
+                    const response = await fetch('http://localhost:3000/tables');
+                    if (!response.ok) throw new Error('Erro ao buscar mesas');
+                    const mesas = await response.json();
+                    console.log('Mesas recebidas:', mesas);  // Log de depuração
+                    tableList.innerHTML = '';
+                    mesas.forEach(mesa => {
+                        console.log(`Mesa ID: ${mesa.idTable}`);  // Log de depuração
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td class="td">${mesa.title}</td>
+                            <td class="td td-buttons">
+                                <button class="delete-button button button-delete" data-id="${mesa.idTable}"><img src="/imgs/lixeira2.png" alt="lixeira" class="delete-image"></button>
+                            </td>
+                        `;
+                        tableList.appendChild(row);
+                    });
+
+                    // Adicionar event listeners aos botões de deletar
+                    document.querySelectorAll('.delete-button').forEach(button => {
+                        button.addEventListener('click', async (event) => {
+                            const id = event.currentTarget.getAttribute('data-id');
+                            try {
+                                console.log(`Tentando deletar a mesa com id ${id}`);  // Log de depuração
+                                const response = await fetch(`http://localhost:3000/tables/${id}`, { method: 'DELETE' });
+                                if (!response.ok) {
+                                    const errorMsg = await response.json();
+                                    if (response.status === 400) {
+                                        alert(errorMsg.msg); // Mostrar mensagem de erro ao usuário
+                                    } else {
+                                        throw new Error(errorMsg.msg);
+                                    }
+                                } else {
+                                    console.log('Mesa deletada:', id);  // Log de depuração
+                                    listarMesas(); // Atualizar a lista após deletar
+                                }
+                            } catch (error) {
+                                console.error('Erro ao deletar mesa:', error);
+                                alert('A mesa não pode ser deletada , pois tem pedidos em aberto.'); // Mostrar mensagem de erro ao usuário
+                            }
+                        });
+                    });
+                } catch (error) {
+                    console.error('Erro:', error);
+                    alert('A mesa não pode ser deletada , pois tem pedidos em aberto.'); // Mostrar mensagem de erro ao usuário
+                }
+            };
+
+            // Event listener para adicionar mesa
+            botaoAdcMesas.addEventListener('click', async () => {
+                const mesaName = mesaNameInput.value.trim();
+                if (mesaName) {
+                    try {
+                        const response = await fetch('http://localhost:3000/tables', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ title: mesaName })
+                        });
+                        if (!response.ok) {
+                            const errorMsg = await response.json();
+                            throw new Error(errorMsg.msg);
+                        }
+                        console.log('Mesa adicionada:', mesaName);  // Log de depuração
+                        mesaNameInput.value = '';
+                        listarMesas(); // Atualizar a lista após adicionar
+                    } catch (error) {
+                        console.error('Erro ao adicionar mesa:', error);
+                        alert('Erro ao adicionar mesa. Tente novamente mais tarde.'); // Mostrar mensagem de erro ao usuário
+                    }
+                }
+            });
+
+            // Inicializar a lista de mesas
+            listarMesas();
+        });
+
+    </script>
 </body>
 
 </html>

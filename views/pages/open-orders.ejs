@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/list-product-adm.css">
+    <link rel="shortcut icon" type="menu.ico" href="/imgs/icone de menu.ico" />
+    <title>Pedidos em aberto</title>
+</head>
+
+<body>
+    <form id="formulario">
+        <div>
+            <button type="button" class="botao_sair" id="botao_sair" onclick="window.location.href = '/menu-adm'">
+                <img class="seta_sair" id="seta_sair" src="/imgs/Voltar.png">
+            </button>
+        </div>
+
+        <h3>Mesas com pedidos abertos</h3>
+        <div id="mesas_pedidos_abertos">
+            <!-- Aqui serão inseridos dinamicamente as mesas com pedidos abertos -->
+        </div>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const containerMesas = document.getElementById('mesas_pedidos_abertos');
+
+            fetch('http://localhost:3000/tables')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(async mesas => {
+                    console.log('Mesas recebidas:', mesas); // Debugging: log the fetched tables
+                    for (const mesa of mesas) {
+                        const mesaSection = document.createElement('section');
+                        mesaSection.classList.add('mesa-section');
+                        mesaSection.innerHTML = `
+                            <h4>${mesa.title}</h4>
+                            <table class="tabela_pedidos">
+                                <thead>
+                                    <tr>
+                                        <th>Produto</th>
+                                        <th>Quantidade</th>
+                                        <th>Preço (unidade)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mesa_${mesa.idTable}_pedidos">
+                                    <!-- Aqui serão inseridos dinamicamente os pedidos da mesa -->
+                                </tbody>
+                            </table>
+                            <div class="total-section" id="mesa_${mesa.idTable}_total">
+                                <strong>Total:</strong> R$ <span id="total_${mesa.idTable}">0.00</span>
+                            </div>
+                            <button class="pagar-button" data-id="${mesa.idTable}">Pagar</button>
+                        `;
+
+                        containerMesas.appendChild(mesaSection);
+
+                        // Buscar e inserir pedidos da mesa
+                        await fetch(`http://localhost:3000/orders/table/${mesa.idTable}`)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(produtos => {
+                                console.log(`Pedidos da mesa ${mesa.title}:`, produtos); // Debugging: log the fetched products
+                                const pedidosBody = document.getElementById(`mesa_${mesa.idTable}_pedidos`);
+                                let totalMesa = 0;
+
+                                if (produtos.length === 0) {
+                                    pedidosBody.innerHTML = '<tr><td colspan="3">Nenhum pedido encontrado.</td></tr>';
+                                }
+
+                                produtos.forEach(produto => {
+                                    console.log('Produto:', produto); // Debugging: log each product to check property names
+                                    totalMesa += produto.price * produto.quantity;
+                                    const row = document.createElement('tr');
+                                    row.innerHTML = `
+                                        <td class="td">${produto.titleProduct || 'N/A'}</td>
+                                        <td class="td">${produto.quantity}</td>
+                                        <td class="td">R$ ${produto.price.toFixed(2)}</td>
+                                    `;
+                                    pedidosBody.appendChild(row);
+                                });
+
+                                // Atualizar o total da mesa
+                                const totalSpan = document.getElementById(`total_${mesa.idTable}`);
+                                totalSpan.textContent = totalMesa.toFixed(2);
+                            })
+                            .catch(error => {
+                                console.error(`Erro ao buscar pedidos da mesa ${mesa.title}:`, error);
+                            });
+                    }
+
+                    // Adicionar evento de pagamento (limpar pedidos da mesa)
+                    document.querySelectorAll('.pagar-button').forEach(button => {
+                        button.addEventListener('click', async () => {
+                            const mesaId = button.getAttribute('data-id');
+                            if (confirm(`Tem certeza que deseja pagar e limpar os pedidos da mesa ${mesaId}?`)) {
+                                try {
+                                    const response = await fetch(`http://localhost:3000/tables/${mesaId}/pay`, {
+                                        method: 'DELETE'
+                                    });
+                                    if (response.ok) {
+                                        alert(`Pedidos da mesa ${mesaId} pagos e limpos com sucesso!`);
+                                        location.reload(); // Recarregar a página para atualizar a lista de pedidos
+                                    } else {
+                                        throw new Error('Erro ao pagar pedidos da mesa.');
+                                    }
+                                } catch (error) {
+                                    console.error('Erro ao pagar pedidos da mesa:', error);
+                                    alert('Erro ao pagar pedidos da mesa. Tente novamente mais tarde.');
+                                }
+                            }
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar mesas:', error);
+                    alert('Erro ao buscar mesas. Tente novamente mais tarde.');
+                });
+        });
+    </script>
+</body>
+
+</html>

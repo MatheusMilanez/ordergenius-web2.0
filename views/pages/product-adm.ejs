@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
@@ -10,47 +10,101 @@
 </head>
 
 <body>
-    <form>
+    <form id="productForm">
         <button type="button" class="botao_sair" id="botao_sair" onclick="window.location.href = '/list-product'">
             <img class="seta_sair" id="seta_sair" src="/imgs/Voltar.png">
         </button>
         <h3>Dados do produto</h3>
         <div>
-            <label for="Nome_prod">Nome:</label>
-            <input type="text" name="produto" />
-        </div>
-
-
-        <div>
-            <label for="Categoria" name="Categoria" class="categoria" id="">Categoria:</label>
-            <input type="text" name="Categoria" />
-        </div>
-
-
-        <div>
-            <label for="Nome_prod">Preço:</label>
-            <input type="text" name="preco" />
+            <label for="titleProducts">Nome:</label>
+            <input type="text" name="titleProducts" id="titleProducts" required />
         </div>
 
         <div>
-            <label for="Nome_prod">Quantidade:</label>
-            <input type="number" name="Quantidade" />
+            <label for="foodStatus">Categoria:</label>
+            <input type="text" name="foodStatus" id="foodStatus" required />
         </div>
 
+        <div>
+            <label for="price">Preço:</label>
+            <input type="text" name="price" id="price" required />
+        </div>
 
         <div>
-            <button class="bt_cancelar" type="submit">
-                
-                <label for=" salvar_prod">Cancelar</label>
+            <label for="quantity">Quantidade:</label>
+            <input type="number" name="quantity" id="quantity" required />
+        </div>
+
+        <div>
+            <button class="bt_cancelar" type="button" onclick="window.location.href='/list-product'">
+                <label>Cancelar</label>
             </button>
-            <button class="bt_salvar" type="reset">
-                
-                <label for=" salvar_prod">Salvar</label>
+            <button class="bt_salvar" type="submit">
+                <label>Salvar</label>
             </button>
         </div>
-
     </form>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            const productId = params.get('id');
+
+            if (productId) {
+                // Fetch the product data and populate the form
+                fetch(`http://localhost:3000/products/${productId}`)
+                   .then(response => response.json())
+                   .then(product => {
+                        document.getElementById('titleProducts').value = product.titleProducts;
+                        document.getElementById('foodStatus').value = product.foodStatus;
+                        document.getElementById('price').value = product.price;
+                        document.getElementById('quantity').value = product.quantity;
+                    });
+            }
+
+            document.getElementById('productForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const formData = new FormData(this);
+                const data = {
+                    titleProducts: formData.get('titleProducts'),
+                    foodStatus: formData.get('foodStatus'),
+                    price: formData.get('price'),
+                    quantity: formData.get('quantity')
+                };
+
+                let url = 'http://localhost:3000/products';
+                let method = 'POST';
+
+                if (productId) {
+                    url += `/${productId}`;
+                    method = 'PUT';
+                }
+
+                fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+               .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ', response.statusText);
+                    }
+                    return response.json();
+                })
+               .then(data => {
+                    alert('Produto salvo com sucesso!');
+                    window.location.href = '/list-product';
+                })
+               .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Erro ao salvar produto');
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

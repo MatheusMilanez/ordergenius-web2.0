@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/table-adm.css">
+    <link rel="stylesheet" href="/css/list-product-adm.css">
     <link rel="shortcut icon" type="menu.ico" href="/imgs/icone de menu.ico" />
-    <title>Lista de  Produtos</title>
+    <title>Lista de Produtos</title>
 </head>
 
 <body>
-    <form method="POST" action="" id="formulario">
+    <form id="formulario">
         <div>
             <button type="button" class="botao_sair" id="botao_sair" onclick="window.location.href = '/menu-adm'">
                 <img class="seta_sair" id="seta_sair" src="/imgs/Voltar.png">
@@ -19,16 +19,125 @@
         
         <h3>Menu produtos</h3>
         <div class="adc_mesas" id="adc_mesas">
-            <button type="button" class="botao_adc_mesas" id="botao_adc_mesas" onclick = "window.location.href = '/product-adm'">
+            <button type="button" class="botao_adc_mesas" id="botao_adc_mesas" onclick="window.location.href = '/product-adm'">
                 <img class="img_adc_mesa" id="img_adc_mesa" src="/imgs/adicionar.png" />
                 <label class="txt_adicionar_mesas" for="mesas">Adicionar produto(s)</label>
             </button>
         </div>
         <div>
-        <h4> Lista de produtos</h4> 
+            <h4> Lista de produtos</h4>
+            <table id="tabela_produtos">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Categoria</th>
+                        <th>Preço</th>
+                        <th>Quantidade</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Products will be dynamically inserted here -->
+                    
+                </tbody>
+            </table>
         </div>
-
     </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('http://localhost:3000/products')
+              .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ',response.statusText);
+                    }
+                    return response.json();
+                })
+              .then(products => {
+                    console.log('Fetched products:', products); // Debugging: log the fetched products
+                    const tableBody = document.querySelector('#tabela_produtos tbody');
+                    tableBody.innerHTML = '';
+
+                    if (products.length === 0) {
+                        tableBody.innerHTML = '<tr><td colspan="6">No products found.</td></tr>';
+                    }
+
+                    products.forEach(product => {
+                        console.log('Product:', product); // Debugging: log each product to check property names
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td class = "td">${product.id}</td>
+                            <td class = "td">${product.titleProducts || 'N/A'}</td>
+                            <td class = "td">${product.foodStatus || 'N/A'}</td>
+                            <td class = "td">R$:${product.price || 'N/A'}</td>
+                            <td class = "td">${product.quantity || 'N/A'}</td>
+                            <td class = "td td-buttons">
+                                <button class="edit-button button button-edit" data-id="${product.id}"><img src="/imgs/editar.png" alt="editar" class="edit-image"></button>
+                                <button class="delete-button button button-delete" data-id="${product.id}"><img src="/imgs/lixeira2.png" alt="lixeira" class="delete-image"></button>
+                            </td>
+                        `;
+                            tableBody.appendChild(row);
+                    });
+
+                    // Add event listeners for edit and delete buttons
+                    document.querySelectorAll('.edit-button').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const productId = this.getAttribute('data-id');
+                            const productToEdit = products.find(product => product.id === parseInt(productId));
+
+                            if (productToEdit) {
+                                const newTitleProducts = prompt('Enter the new product name:', productToEdit.titleProducts);
+                                const newFoodStatus = prompt('Enter the new product category:', productToEdit.foodStatus);
+                                const newPrice = prompt('Enter the new product price:', productToEdit.price);
+                                const newQuantity = prompt('Enter the new product quantity:', productToEdit.quantity);
+
+                                if (newTitleProducts !== null && newFoodStatus !== null && newPrice !== null && newQuantity !== null) {
+                                    fetch(`http://localhost:3000/products/${productId}`, {
+                                        method: 'PUT',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({
+                                            titleProducts: newTitleProducts,
+                                            foodStatus: newFoodStatus,
+                                            price: newPrice,
+                                            quantity: newQuantity
+                                        })
+                                    })
+                                    .then(response => {
+                                        if (response.ok) {
+                                            alert('Produto atualizado com sucesso!');
+                                            location.reload(); // Reload to update the product list
+                                        } else {
+                                            alert('Erro ao atualizar produto.');
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    });
+
+                    document.querySelectorAll('.delete-button').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const productId = this.getAttribute('data-id');
+                            fetch(`http://localhost:3000/products/${productId}`, { method: 'DELETE' })
+                              .then(response => {
+                                    if (response.ok) {
+                                        alert('Produto removido com sucesso!');
+                                        location.reload(); // Reload to update the product list
+                                    } else {
+                                        alert('Erro ao remover produto.');
+                                    }
+                                });
+                        });
+                    });
+                })
+              .catch(error => {
+                    console.error('Erro ao buscar produtos:', error);
+                });
+        });
+    </script>
 </body>
 
 </html>

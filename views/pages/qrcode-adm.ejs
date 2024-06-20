@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/qrcode-adm.css">
+    <link rel="shortcut icon" type="menu.ico" href="/imgs/impressora.png" />
+    <title>Menu Qrcode</title>
+</head>
+<body>
+    <form method="#" action="#" id="formulario">
+        <div>
+            <button type="button" class="botao_sair" id="botao_sair" onclick="window.location.href = '/menu-adm'">
+                <img class="seta_sair" id="seta_sair" src="/imgs/Voltar.png" alt="Voltar">
+            </button>
+        </div>
+        <h3>Qrcode</h3>
+        <div class="imprimir_qrcode" id="imprimir_qrcode">
+            <button type="button" class="botao_imprimir_qrcode" id="botao_imprimir_qrcode" onclick="printDiv('qrcode_list')">
+                <img class="img_imprimir_qrcode" id="img_imprimir_qrcode" src="/imgs/impressora.png" alt="Imprimir">
+                <label class="txt_adicionar_mesas" for="mesas">Imprimir Qrcode</label>
+            </button>
+        </div>
+        <div>
+            <h4>Lista de mesas</h4>
+        </div>
+        <div id="qrcode_list" class="qrcode_list">
+            <!-- QR Codes serão inseridos aqui dinamicamente -->
+        </div>
+    </form>
+
+    <script>
+        // Função para buscar QR codes do endpoint
+        async function fetchQRCodes() {
+            try {
+                const response = await fetch('http://localhost:3000/tables/qrcodes');
+                const data = await response.json();
+                const qrcodeList = document.getElementById('qrcode_list');
+
+                data.forEach(table => {
+                    const qrCodeItem = document.createElement('div');
+                    qrCodeItem.classList.add('qrcode_item');
+
+                    const tableInfo = document.createElement('div');
+                    tableInfo.textContent = `Mesa ${table.idTable}`;
+
+                    const qrCodeImage = document.createElement('div');
+                    qrCodeImage.innerHTML = table.qrcode; // Inserir SVG diretamente
+
+                    qrCodeItem.appendChild(tableInfo);
+                    qrCodeItem.appendChild(qrCodeImage);
+
+                    qrcodeList.appendChild(qrCodeItem);
+                });
+            } catch (error) {
+                console.error('Erro ao buscar os QR codes:', error);
+            }
+        }
+
+        // Função para imprimir a lista de QR codes
+        function printDiv(qrcode_list) {
+            const qrcodeItems = document.querySelectorAll(`#${qrcode_list} .qrcode_item`);
+
+            let htmlToPrint = '';
+            qrcodeItems.forEach((item, index) => {
+                htmlToPrint += `<div class="page-break">${item.innerHTML}</div>`;
+            });
+
+            const originalContents = document.body.innerHTML;
+            document.body.innerHTML = htmlToPrint;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+        }
+
+        // Chama a função para buscar QR codes quando a página carregar
+        document.addEventListener('DOMContentLoaded', fetchQRCodes);
+    </script>
+</body>
+</html>

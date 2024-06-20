@@ -132,6 +132,25 @@ async function defineRoutes() {
                 }
             });
 
+            router.get(`/open-orders`, (req, res) => {
+                try {
+                    res.render('pages/open-orders');
+                } catch (error) {
+                    console.log(error);
+                    res.render('pages/open-orders');
+                }
+            });
+
+            router.get(`/qrcode-adm`, (req, res) => {
+                try {
+                    res.render('pages/qrcode-adm');
+                } catch (error) {
+                    console.log(error);
+                    res.render('pages/qrcode-adm');
+                }
+            });
+
+
 
   
 
