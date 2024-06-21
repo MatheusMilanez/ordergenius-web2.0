@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/list-product-adm.css">
-    <link rel="shortcut icon" type="menu.ico" href="/imgs/icone de menu.ico" />
+    <link rel="shortcut icon" type="menu.ico" href="/imgs/icone-de-menu.ico" />
     <title>Lista de Produtos</title>
 </head>
 
@@ -29,7 +29,7 @@
             <table id="tabela_produtos">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>IMG</th>
                         <th>Nome</th>
                         <th>Categoria</th>
                         <th>Preço</th>
@@ -47,95 +47,89 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('http://localhost:3000/products')
-              .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ',response.statusText);
-                    }
-                    return response.json();
-                })
-              .then(products => {
-                    console.log('Fetched products:', products); // Debugging: log the fetched products
-                    const tableBody = document.querySelector('#tabela_produtos tbody');
-                    tableBody.innerHTML = '';
+            const tableBody = document.querySelector('#tabela_produtos tbody');
 
-                    if (products.length === 0) {
-                        tableBody.innerHTML = '<tr><td colspan="6">No products found.</td></tr>';
-                    }
+            // Função para abrir o alert de edição
+            function openEditPrompt(product) {
+                const newTitle = prompt('Digite o novo nome:', product.titleProducts || '');
+                const newFoodStatus = prompt('Digite a nova categoria:', product.foodStatus || '');
+                const newPrice = prompt('Digite o novo preço:', product.price || '');
+                const newQuantity = prompt('Digite a nova quantidade:', product.quantity || '');
 
-                    products.forEach(product => {
-                        console.log('Product:', product); // Debugging: log each product to check property names
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td class = "td">${product.id}</td>
-                            <td class = "td">${product.titleProducts || 'N/A'}</td>
-                            <td class = "td">${product.foodStatus || 'N/A'}</td>
-                            <td class = "td">R$:${product.price || 'N/A'}</td>
-                            <td class = "td">${product.quantity || 'N/A'}</td>
-                            <td class = "td td-buttons">
-                                <button class="edit-button button button-edit" data-id="${product.id}"><img src="/imgs/editar.png" alt="editar" class="edit-image"></button>
-                                <button class="delete-button button button-delete" data-id="${product.id}"><img src="/imgs/lixeira2.png" alt="lixeira" class="delete-image"></button>
-                            </td>
-                        `;
+                if (newTitle !== null && newFoodStatus !== null && newPrice !== null && newQuantity !== null) {
+                    const updatedProduct = {
+                        titleProducts: newTitle,
+                        foodStatus: newFoodStatus,
+                        price: newPrice,
+                        quantity: newQuantity
+                    };
+
+                    // Atualizar o produto no backend via requisição PUT
+                    fetch(`http://localhost:3000/products/${product.id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(updatedProduct)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ', response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        alert('Produto atualizado com sucesso!');
+                        // Atualizar a tabela de produtos após a edição
+                        fetchProducts();
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        alert('Erro ao atualizar produto');
+                    });
+                }
+            }
+
+            // Função para buscar e exibir os produtos na tabela
+            function fetchProducts() {
+                fetch('http://localhost:3000/products')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ', response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(products => {
+                        tableBody.innerHTML = '';
+
+                        if (products.length === 0) {
+                            tableBody.innerHTML = '<tr><td colspan="6">Nenhum produto encontrado.</td></tr>';
+                        }
+
+                        products.forEach(product => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td class="td"><img src="${product.imageUrl}" alt="${product.titleProducts}" class="product-image"></td>
+                                <td class="td">${product.titleProducts || 'N/A'}</td>
+                                <td class="td">${product.foodStatus || 'N/A'}</td>
+                                <td class="td">R$:${product.price || 'N/A'}</td>
+                                <td class="td">${product.quantity || 'N/A'}</td>
+                                <td class="td td-buttons">
+                                    <button class="edit-button button button-edit" onclick="openEditPrompt(${JSON.stringify(product)})"><img src="/imgs/editar.png" alt="editar" class="edit-image"></button>
+                                    <button class="delete-button button button-delete" data-id="${product.id}"><img src="/imgs/lixeira2.png" alt="lixeira" class="delete-image"></button>
+                                </td>
+                            `;
                             tableBody.appendChild(row);
-                    });
-
-                    // Add event listeners for edit and delete buttons
-                    document.querySelectorAll('.edit-button').forEach(button => {
-                        button.addEventListener('click', function() {
-                            const productId = this.getAttribute('data-id');
-                            const productToEdit = products.find(product => product.id === parseInt(productId));
-
-                            if (productToEdit) {
-                                const newTitleProducts = prompt('Enter the new product name:', productToEdit.titleProducts);
-                                const newFoodStatus = prompt('Enter the new product category:', productToEdit.foodStatus);
-                                const newPrice = prompt('Enter the new product price:', productToEdit.price);
-                                const newQuantity = prompt('Enter the new product quantity:', productToEdit.quantity);
-
-                                if (newTitleProducts !== null && newFoodStatus !== null && newPrice !== null && newQuantity !== null) {
-                                    fetch(`http://localhost:3000/products/${productId}`, {
-                                        method: 'PUT',
-                                        headers: {
-                                            'Content-Type': 'application/json'
-                                        },
-                                        body: JSON.stringify({
-                                            titleProducts: newTitleProducts,
-                                            foodStatus: newFoodStatus,
-                                            price: newPrice,
-                                            quantity: newQuantity
-                                        })
-                                    })
-                                    .then(response => {
-                                        if (response.ok) {
-                                            alert('Produto atualizado com sucesso!');
-                                            location.reload(); // Reload to update the product list
-                                        } else {
-                                            alert('Erro ao atualizar produto.');
-                                        }
-                                    });
-                                }
-                            }
                         });
-                    });
 
-                    document.querySelectorAll('.delete-button').forEach(button => {
-                        button.addEventListener('click', function() {
-                            const productId = this.getAttribute('data-id');
-                            fetch(`http://localhost:3000/products/${productId}`, { method: 'DELETE' })
-                              .then(response => {
-                                    if (response.ok) {
-                                        alert('Produto removido com sucesso!');
-                                        location.reload(); // Reload to update the product list
-                                    } else {
-                                        alert('Erro ao remover produto.');
-                                    }
-                                });
-                        });
+                    })
+                    .catch(error => {
+                        console.error('Erro ao buscar produtos:', error);
                     });
-                })
-              .catch(error => {
-                    console.error('Erro ao buscar produtos:', error);
-                });
+            }
+
+            // Chamar a função para buscar e exibir os produtos ao carregar a página
+            fetchProducts();
         });
     </script>
 </body>

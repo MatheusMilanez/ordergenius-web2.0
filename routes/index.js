@@ -17,7 +17,7 @@ async function getTables() {
 async function getOrders(idTable) {
     try {
         const response = await axios.get(`http://localhost:3000/tables/${idTable}/orders`);
-        console.log("getOrders:",response.data.orders)
+        console.log("getOrders:", response.data.orders)
         return response.data.orders;
     } catch (error) {
         console.error(`Erro ao obter os pedidos para a mesa ${idTable}:`, error);
@@ -25,13 +25,76 @@ async function getOrders(idTable) {
     }
 }
 
+// Rota para a página de LOGIN
+router.get(`/`, (req, res) => {
+    try {
+        res.render('pages/login');
+    } catch (error) {
+        console.log(error);
+        res.render('pages/login');
+    }
+});
 
-// Função para definir as rotas
-async function defineRoutes() {
+router.get(`/menu-adm`, (req, res) => {
+    try {
+        res.render('pages/menu-adm');
+    } catch (error) {
+        console.log(error);
+        res.render('pages/menu-adm');
+    }
+});
+
+router.get(`/table-adm`, (req, res) => {
+    try {
+        res.render('pages/table-adm');
+    } catch (error) {
+        console.log(error);
+        res.render('pages/table-adm');
+    }
+});
+
+router.get(`/list-product`, (req, res) => {
+    try {
+        res.render('pages/list-product');
+    } catch (error) {
+        console.log(error);
+        res.render('pages/list-product');
+    }
+});
+
+router.get(`/product-adm`, (req, res) => {
+    try {
+        res.render('pages/product-adm');
+    } catch (error) {
+        console.log(error);
+        res.render('pages/product-adm');
+    }
+});
+
+router.get(`/open-orders`, (req, res) => {
+    try {
+        res.render('pages/open-orders');
+    } catch (error) {
+        console.log(error);
+        res.render('pages/open-orders');
+    }
+});
+
+router.get(`/qrcode-adm`, (req, res) => {
+    try {
+        res.render('pages/qrcode-adm');
+    } catch (error) {
+        console.log(error);
+        res.render('pages/qrcode-adm');
+    }
+});
+
+// Função para definir as rotas das mesas dinamicamente
+async function defineTableRoutes() {
     const tables = await getTables();
 
     tables.forEach(table => {
-        const { idTable, title } = table;
+        const { idTable } = table;
 
         if (idTable) {
             // Rota Menu User
@@ -74,96 +137,20 @@ async function defineRoutes() {
             router.get(`/${idTable}/menu-commands`, async (req, res) => {
                 try {
                     const orders = await getOrders(idTable);
-                    console.log("Lista de pedidos",orders)
+                    console.log("Lista de pedidos", orders)
                     res.render('pages/menu-commands', { orders, idTable });
                 } catch (error) {
                     console.log(error);
                     res.render('pages/menu-commands', { orders: [], idTable });
                 }
             });
-
-            //ROTAS DAS TELAS DO ADMINISTRADOR
-
-            // Rota para a página de LOGIN
-            router.get(`/`, (req, res) => {
-                try {
-                    res.render('pages/login');
-                } catch (error) {
-                    console.log(error);
-                    res.render('pages/login');
-                }
-            });
-
-            router.get(`/menu-adm`, (req, res) => {
-                try {
-                    res.render('pages/menu-adm');
-                } catch (error) {
-                    console.log(error);
-                    res.render('pages/menu-adm');
-                }
-            });
-
-            router.get(`/table-adm`, (req, res) => {
-                try {
-                    res.render('pages/table-adm');
-                } catch (error) {
-                    console.log(error);
-                    res.render('pages/table-adm');
-                }
-            });
-
-            router.get(`/list-product`, (req, res) => {
-                try {
-                    res.render('pages/list-product');
-                } catch (error) {
-                    console.log(error);
-                    res.render('pages/list-product');
-                }
-            });
-
-
-            
-            router.get(`/product-adm`, (req, res) => {
-                try {
-                    res.render('pages/product-adm');
-                } catch (error) {
-                    console.log(error);
-                    res.render('pages/product-adm');
-                }
-            });
-
-            router.get(`/open-orders`, (req, res) => {
-                try {
-                    res.render('pages/open-orders');
-                } catch (error) {
-                    console.log(error);
-                    res.render('pages/open-orders');
-                }
-            });
-
-            router.get(`/qrcode-adm`, (req, res) => {
-                try {
-                    res.render('pages/qrcode-adm');
-                } catch (error) {
-                    console.log(error);
-                    res.render('pages/qrcode-adm');
-                }
-            });
-
-
-
-  
-
-
-
-
         } else {
             console.log("Não existe essa mesa");
         }
     });
 }
 
-// Chama a função para definir as rotas
-defineRoutes();
+// Chama a função para definir as rotas das mesas
+defineTableRoutes();
 
 module.exports = router;

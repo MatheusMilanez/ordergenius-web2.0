@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/product-adm.css">
-    <link rel="shortcut icon" type="menu.ico" href="/imgs/icone de menu.ico" />
+    <link rel="shortcut icon" type="menu.ico" href="/imgs/icone-de-menu.ico" />
     <title>Adicionar produto(s)</title>
 </head>
 
 <body>
-    <form id="productForm">
+    <form id="productForm" enctype="multipart/form-data">
         <button type="button" class="botao_sair" id="botao_sair" onclick="window.location.href = '/list-product'">
             <img class="seta_sair" id="seta_sair" src="/imgs/Voltar.png">
         </button>
@@ -36,6 +36,11 @@
         </div>
 
         <div>
+            <label for="image">Imagem:</label>
+            <input type="file" name="image" id="image" accept="image/*">
+        </div>
+
+        <div>
             <button class="bt_cancelar" type="button" onclick="window.location.href='/list-product'">
                 <label>Cancelar</label>
             </button>
@@ -53,8 +58,8 @@
             if (productId) {
                 // Fetch the product data and populate the form
                 fetch(`http://localhost:3000/products/${productId}`)
-                   .then(response => response.json())
-                   .then(product => {
+                    .then(response => response.json())
+                    .then(product => {
                         document.getElementById('titleProducts').value = product.titleProducts;
                         document.getElementById('foodStatus').value = product.foodStatus;
                         document.getElementById('price').value = product.price;
@@ -66,12 +71,6 @@
                 event.preventDefault();
 
                 const formData = new FormData(this);
-                const data = {
-                    titleProducts: formData.get('titleProducts'),
-                    foodStatus: formData.get('foodStatus'),
-                    price: formData.get('price'),
-                    quantity: formData.get('quantity')
-                };
 
                 let url = 'http://localhost:3000/products';
                 let method = 'POST';
@@ -82,26 +81,23 @@
                 }
 
                 fetch(url, {
-                    method: method,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-               .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ', response.statusText);
-                    }
-                    return response.json();
-                })
-               .then(data => {
-                    alert('Produto salvo com sucesso!');
-                    window.location.href = '/list-product';
-                })
-               .catch((error) => {
-                    console.error('Error:', error);
-                    alert('Erro ao salvar produto');
-                });
+                        method: method,
+                        body: formData
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ', response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        alert('Produto salvo com sucesso!');
+                        window.location.href = '/list-product';
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        alert('Erro ao salvar produto');
+                    });
             });
         });
     </script>
