@@ -90,7 +90,7 @@ router.get(`/qrcode-adm`, (req, res) => {
 });
 
 // Função para definir as rotas das mesas dinamicamente
-async function defineTableRoutes() {
+(async () => {
     const tables = await getTables();
 
     tables.forEach(table => {
@@ -98,7 +98,7 @@ async function defineTableRoutes() {
 
         if (idTable) {
             // Rota Menu User
-            router.get(`/${idTable}/`, async (req, res) => {
+            router.get(`/${idTable}`, async (req, res) => {
                 try {
                     const response = await axios.get('http://localhost:3000/');
                     const data = response.data;
@@ -148,9 +148,6 @@ async function defineTableRoutes() {
             console.log("Não existe essa mesa");
         }
     });
-}
-
-// Chama a função para definir as rotas das mesas
-defineTableRoutes();
+})();
 
 module.exports = router;

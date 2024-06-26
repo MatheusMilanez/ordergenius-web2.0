@@ -1,92 +1,124 @@
-body{
+body {
     height: 100vh;
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
-h1{
-    display: flex;
-    justify-content:center;
+h1 {
+    text-align: center;
     color: black;
 }
-form{
-    height: 100%;
-    width: 380px;
+
+form {
+    width: 90%; /* Ajustado para ocupar 90% da largura disponível */
+    max-width: 700px; /* Limita a largura máxima do formulário para 700px */
     background-color: transparent;
     border-radius: 40px;
+    padding: 20px; /* Adicionado padding para espaçamento interno */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    margin: 20px; /* Espaçamento externo */
 }
 
 form div {
-    margin: 20px;
-    display: flex;
-    justify-content: center;
+    margin: 20px auto; /* Centraliza os elementos horizontalmente */
+    text-align: center; /* Centraliza o texto dentro dos botões */
 }
 
 label {
-    justify-content: center;
     font-weight: bold;
-    text-align:center;
-    margin: 30px;
+    display: block;
+    margin-top: 10px; /* Espaçamento superior entre os elementos */
 }
 
-button{
-    width: 342px;
+button {
+    width: 100%;
+    max-width: 400px; /* Limita a largura máxima dos botões para 400px */
     height: 100px;
     border: none;
     border-radius: 40px;
-    font-family:'Times New Roman', Times, serif;
-    font-size:large;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: large;
     font-weight: bold;
     display: flex;
     justify-content: center;
-    text-align: center;
+    align-items: center;
     padding: 10px 20px;
-    margin: 10px;
+    margin: 10px auto; /* Centraliza os botões horizontalmente */
     background-color: white;
     color: black;
+    cursor: pointer; /* Altera o cursor ao passar sobre os botões */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
 
 button img {
     width: 55px;
     height: 55px;
-    margin-top: 15px;
+    margin-right: 10px; /* Espaçamento entre a imagem e o texto */
 }
 
-
-button:hover{
+button:hover {
     background-color: #f40000;
-    color: #FFFFFF;
-
+    color: #ffffff;
 }
-
 
 .botao_sair {
-    width: 159px;
+    width: 100%; /* Largura total do botão de sair */
+    max-width: 400px; /* Limita a largura máxima do botão de sair para 400px */
     height: 68px;
     border-radius: 20px;
-    border:none;
-    margin: 20px;
-    font-family:'Times New Roman', Times, serif;
-    font-size:large;
+    border: none;
+    margin: 20px auto; /* Centraliza o botão de sair horizontalmente */
+    font-family: 'Times New Roman', Times, serif;
+    font-size: large;
     font-weight: bold;
     display: flex;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
     color: black;
     background-color: white;
-
-    transition: background-color 0.5s ease, color 0.5s ease, transform 0.5s ease
- }
- 
- .botao_sair:hover{
-    background-color: red;
-    color:white;
-    transform: scale (1.6)
-    
+    cursor: pointer; /* Altera o cursor ao passar sobre o botão */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
- 
+
+.botao_sair:hover {
+    background-color: red;
+    color: white;
+    transform: scale(1.1); /* Efeito de escala ao passar o mouse */
+}
+
+.img-cifra{
+    width: 100px;
+    height: auto;
+}
+
+.text-cifra{
+   display: block;
+   position: relative;
+   right: 25px;
+}
+
+@media (max-width: 600px) {
+    /* Estilos específicos para telas menores (exemplo: smartphones) */
+    form {
+        width: 90%;
+        max-width: 300px;
+    }
+
+    button {
+        font-size: medium;
+        padding: 8px 16px;
+        height: 80px;
+    }
+
+    .botao_sair {
+        font-size: medium;
+        padding: 8px 16px;
+        height: 60px;
+    }
+}
