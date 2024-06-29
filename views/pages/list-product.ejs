@@ -107,6 +107,7 @@
                         }
 
                         products.forEach(product => {
+                            console.log(product.imageUrl);
                             const row = document.createElement('tr');
                             row.innerHTML = `
                                 <td class="td"><img src="${product.imageUrl}" alt="${product.titleProducts}" class="product-image"></td>

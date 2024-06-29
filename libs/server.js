@@ -11,6 +11,8 @@ function createServer() {
 
   // Servir arquivos estáticos
   app.use(express.static(path.join(__dirname, '../public')));
+  
+
 
   // Middleware para análise do corpo das requisições
   app.use(express.json());
