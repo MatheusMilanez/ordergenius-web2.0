@@ -120,3 +120,8 @@ h4{
     align-items: center;
 }
 
+.product-image{
+    width: 50px;
+    height: 50px;
+}
+

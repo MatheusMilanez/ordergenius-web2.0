@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/Tela TCC new/Tela_TCC_Users/menu_bebidas/refrigerantes/refrigerantes.css">
+    <link rel="stylesheet" href="/css/product-user.css">
+    <link rel="shortcut icon" type="menu.ico" href="/Tela TCC/Imagens_tcc/logo icone comida e bebida.png" />
+    <title id="page-title">Categoria</title>
+</head>
+
+<body>
+    <form action="#">
+       <div class="div_bt_sair">
+            <button class="botao_sair" id="botao_sair">
+            <img class= "seta_sair" id="seta_sair" src="/Tela TCC new/Tela TCC/Imagens_tcc/Voltar.png">
+            </button>
+        </div> 
+        <div class="h2">
+            <h2 class="h2_categoria" id="category-title">Categoria</h2>
+        </div>
+        <div>
+            <section id="product-list">
+                <!-- Produtos serão listados aqui dinamicamente -->
+            </section>
+        </div>
+    </form>
+
+    <script>
+        // Função para carregar produtos de uma categoria específica
+        async function loadProducts(category) {
+            try {
+                const response = await fetch(`http://localhost:3000/products/category/${category}`);
+                const products = await response.json();
+
+                const container = document.getElementById('product-list');
+                const title = document.getElementById('category-title');
+                const pageTitle = document.getElementById('page-title');
+
+                title.innerText = category.charAt(0).toUpperCase() + category.slice(1);
+                pageTitle.innerText = category.charAt(0).toUpperCase() + category.slice(1);
+
+                products.forEach(product => {
+                    const productDiv = document.createElement('div');
+                    productDiv.className = 'div_total';
+
+                    const img = document.createElement('img');
+                    img.src = product.imageUrl;
+                    img.alt = product.titleProducts;
+
+                    const labelGroup = document.createElement('div');
+                    labelGroup.className = 'label-group';
+
+                    const small = document.createElement('small');
+                    small.innerText = product.titleProducts;
+
+                    labelGroup.appendChild(small);
+
+                    const buttonGroup = document.createElement('div');
+                    buttonGroup.className = 'button-group';
+
+                    const addButton = document.createElement('button');
+                    addButton.innerHTML = '<label for="adicionar">-</label>';
+
+                    const p = document.createElement('p');
+                    p.className = 'n_itens';
+                    p.innerText = 'n°';
+
+                    const removeButton = document.createElement('button');
+                    removeButton.innerHTML = '<label for="remover">+</label>';
+
+                    buttonGroup.appendChild(addButton);
+                    buttonGroup.appendChild(p);
+                    buttonGroup.appendChild(removeButton);
+
+                    productDiv.appendChild(img);
+                    productDiv.appendChild(labelGroup);
+                    productDiv.appendChild(buttonGroup);
+
+                    container.appendChild(productDiv);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar produtos:', error);
+            }
+        }
+
+        // Obtém a categoria da URL e carrega os produtos
+        window.onload = () => {
+            const pathParts = window.location.pathname.split('/');
+            const category = pathParts[pathParts.length - 1];
+            loadProducts(category);
+        };
+    </script>
+</body>
+</html>

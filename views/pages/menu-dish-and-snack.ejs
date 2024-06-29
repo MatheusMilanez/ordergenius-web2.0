@@ -14,26 +14,44 @@
             <h2>Pratos e petiscos</h2>
         </div>
         <div>
-            <section>
-                <button class="botao_pizzas">
-                    <label class="pizza" for="pizza">Pizzas</label>
-                </button>
-                <button class="botao_porcoes">
-                    <label class="porcoes" for="porcoes">Porções</label>
-                </button>
-                <button class="botao_refeicoes">
-                    <label class="refeicoes" for="refeicoes">Refeições</label>
-                </button>
-                <button class="botao_lanches">
-                    <label class="lanches" for="lanches">Lanches</label>
-                </button>
-                <button class="botao_doces">
-                    <label class="doces e sobremesas" for="doces">Doces e Sobremesas</label>
-                </button>
-
+            <section id="category-buttons">
+                <!-- Botões serão adicionados aqui dinamicamente -->
             </section>
         </div>    
     </form>
-</body>
 
+    <script>
+        // Função para carregar categorias e criar botões dinamicamente
+        async function loadCategories() {
+            try {
+                const response = await fetch('http://localhost:3000/categories');
+                const categories = await response.json();
+
+                const container = document.getElementById('category-buttons');
+
+                categories.forEach(category => {
+                    const categoryRoute = category.toLowerCase().replace(/\s+/g, '-');
+                    const button = document.createElement('button');
+                    button.className = `botao_${categoryRoute}`;
+                    button.type = 'button';
+                    button.onclick = () => {
+                        window.location.href = `/${categoryRoute}`;
+                    };
+
+                    const label = document.createElement('label');
+                    label.className = categoryRoute;
+                    label.innerText = category;
+
+                    button.appendChild(label);
+                    container.appendChild(button);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar categorias:', error);
+            }
+        }
+
+        // Chama a função ao carregar a página
+        window.onload = loadCategories;
+    </script>
+</body>
 </html>

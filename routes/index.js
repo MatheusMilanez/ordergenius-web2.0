@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const nodemon = require('nodemon');
 
 // Função para obter as mesas
 async function getTables() {
@@ -17,7 +18,7 @@ async function getTables() {
 async function getOrders(idTable) {
     try {
         const response = await axios.get(`http://localhost:3000/tables/${idTable}/orders`);
-        console.log("getOrders:", response.data.orders)
+        console.log("getOrders:", response.data.orders);
         return response.data.orders;
     } catch (error) {
         console.error(`Erro ao obter os pedidos para a mesa ${idTable}:`, error);
@@ -26,7 +27,7 @@ async function getOrders(idTable) {
 }
 
 // Rota para a página de LOGIN
-router.get(`/`, (req, res) => {
+router.get('/', (req, res) => {
     try {
         res.render('pages/login');
     } catch (error) {
@@ -35,8 +36,9 @@ router.get(`/`, (req, res) => {
     }
 });
 
-router.get(`/menu-adm`, (req, res) => {
+router.get('/menu-adm', (req, res) => {
     try {
+        nodemon.restart();
         res.render('pages/menu-adm');
     } catch (error) {
         console.log(error);
@@ -44,8 +46,9 @@ router.get(`/menu-adm`, (req, res) => {
     }
 });
 
-router.get(`/table-adm`, (req, res) => {
+router.get('/table-adm', (req, res) => {
     try {
+        nodemon.restart();
         res.render('pages/table-adm');
     } catch (error) {
         console.log(error);
@@ -53,7 +56,7 @@ router.get(`/table-adm`, (req, res) => {
     }
 });
 
-router.get(`/list-product`, (req, res) => {
+router.get('/list-product', (req, res) => {
     try {
         res.render('pages/list-product');
     } catch (error) {
@@ -62,7 +65,7 @@ router.get(`/list-product`, (req, res) => {
     }
 });
 
-router.get(`/product-adm`, (req, res) => {
+router.get('/product-adm', (req, res) => {
     try {
         res.render('pages/product-adm');
     } catch (error) {
@@ -71,7 +74,7 @@ router.get(`/product-adm`, (req, res) => {
     }
 });
 
-router.get(`/open-orders`, (req, res) => {
+router.get('/open-orders', (req, res) => {
     try {
         res.render('pages/open-orders');
     } catch (error) {
@@ -80,7 +83,7 @@ router.get(`/open-orders`, (req, res) => {
     }
 });
 
-router.get(`/qrcode-adm`, (req, res) => {
+router.get('/qrcode-adm', (req, res) => {
     try {
         res.render('pages/qrcode-adm');
     } catch (error) {
@@ -90,7 +93,7 @@ router.get(`/qrcode-adm`, (req, res) => {
 });
 
 // Função para definir as rotas das mesas dinamicamente
-async function defineTableRoutes() {
+async function defineRouteTables() {
     const tables = await getTables();
 
     tables.forEach(table => {
@@ -98,10 +101,11 @@ async function defineTableRoutes() {
 
         if (idTable) {
             // Rota Menu User
-            router.get(`/${idTable}/`, async (req, res) => {
+            router.get(`/${idTable}`, async (req, res) => {
                 try {
                     const response = await axios.get('http://localhost:3000/');
                     const data = response.data;
+                    nodemon.restart();
                     res.render('pages/home-user', { data, idTable });
                 } catch (error) {
                     console.error(error);
@@ -137,7 +141,7 @@ async function defineTableRoutes() {
             router.get(`/${idTable}/menu-commands`, async (req, res) => {
                 try {
                     const orders = await getOrders(idTable);
-                    console.log("Lista de pedidos", orders)
+                    console.log("Lista de pedidos", orders);
                     res.render('pages/menu-commands', { orders, idTable });
                 } catch (error) {
                     console.log(error);
@@ -150,7 +154,51 @@ async function defineTableRoutes() {
     });
 }
 
-// Chama a função para definir as rotas das mesas
-defineTableRoutes();
+// Função para obter as categorias dos produtos
+async function getCategories() {
+    try {
+        const response = await axios.get('http://localhost:3000/categories');
+        return response.data;
+    } catch (error) {
+        console.error("Erro ao obter as categorias:", error);
+        return [];
+    }
+}
 
-module.exports = router;
+// Função para definir as rotas das categorias dinamicamente
+async function defineRouteCategories() {
+    const categories = await getCategories();
+
+    categories.forEach(category => {
+        if (category) {
+            const categoryRoute = category.toLowerCase().replace(/\s+/g, '-');
+            console.log("HEREEE:",categoryRoute);
+            console.log("2222222222:",category)
+
+            router.get(`/${categoryRoute}`, async (req, res) => {
+                try {
+                    const response = await axios.get(`http://localhost:3000/products/category/${category}`);
+                    console.log("RESPONSAVEL:", response);
+                    const data = response.data;
+                    console.log()
+                    res.render('pages/category', { category, data });
+                } catch (error) {
+                    console.log(error);
+                    res.render('pages/category', { category, data: [] });
+                }
+            });
+        }
+    });
+}
+
+// Chamada inicial para definir as rotas das categorias
+defineRouteCategories();
+
+// Chamada inicial para definir as rotas
+defineRouteTables();
+
+module.exports = {
+    router,
+    defineRouteTables,
+    defineRouteCategories
+};

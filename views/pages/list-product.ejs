@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,18 +7,17 @@
     <link rel="shortcut icon" type="menu.ico" href="/imgs/icone-de-menu.ico" />
     <title>Lista de Produtos</title>
 </head>
-
 <body>
     <form id="formulario">
         <div>
-            <button type="button" class="botao_sair" id="botao_sair" onclick="window.location.href = '/menu-adm'">
+            <button type="button" class="botao_sair" id="botao_sair">
                 <img class="seta_sair" id="seta_sair" src="/imgs/Voltar.png">
             </button>
         </div>
         
         <h3>Menu produtos</h3>
         <div class="adc_mesas" id="adc_mesas">
-            <button type="button" class="botao_adc_mesas" id="botao_adc_mesas" onclick="window.location.href = '/product-adm'">
+            <button type="button" class="botao_adc_mesas" id="botao_adc_mesas">
                 <img class="img_adc_mesa" id="img_adc_mesa" src="/imgs/adicionar.png" />
                 <label class="txt_adicionar_mesas" for="mesas">Adicionar produto(s)</label>
             </button>
@@ -39,100 +37,11 @@
                 </thead>
                 <tbody>
                     <!-- Products will be dynamically inserted here -->
-                    
                 </tbody>
             </table>
         </div>
     </form>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const tableBody = document.querySelector('#tabela_produtos tbody');
-
-            // Função para abrir o alert de edição
-            function openEditPrompt(product) {
-                const newTitle = prompt('Digite o novo nome:', product.titleProducts || '');
-                const newFoodStatus = prompt('Digite a nova categoria:', product.foodStatus || '');
-                const newPrice = prompt('Digite o novo preço:', product.price || '');
-                const newQuantity = prompt('Digite a nova quantidade:', product.quantity || '');
-
-                if (newTitle !== null && newFoodStatus !== null && newPrice !== null && newQuantity !== null) {
-                    const updatedProduct = {
-                        titleProducts: newTitle,
-                        foodStatus: newFoodStatus,
-                        price: newPrice,
-                        quantity: newQuantity
-                    };
-
-                    // Atualizar o produto no backend via requisição PUT
-                    fetch(`http://localhost:3000/products/${product.id}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(updatedProduct)
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok ', response.statusText);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        alert('Produto atualizado com sucesso!');
-                        // Atualizar a tabela de produtos após a edição
-                        fetchProducts();
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                        alert('Erro ao atualizar produto');
-                    });
-                }
-            }
-
-            // Função para buscar e exibir os produtos na tabela
-            function fetchProducts() {
-                fetch('http://localhost:3000/products')
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok ', response.statusText);
-                        }
-                        return response.json();
-                    })
-                    .then(products => {
-                        tableBody.innerHTML = '';
-
-                        if (products.length === 0) {
-                            tableBody.innerHTML = '<tr><td colspan="6">Nenhum produto encontrado.</td></tr>';
-                        }
-
-                        products.forEach(product => {
-                            console.log(product.imageUrl);
-                            const row = document.createElement('tr');
-                            row.innerHTML = `
-                                <td class="td"><img src="${product.imageUrl}" alt="${product.titleProducts}" class="product-image"></td>
-                                <td class="td">${product.titleProducts || 'N/A'}</td>
-                                <td class="td">${product.foodStatus || 'N/A'}</td>
-                                <td class="td">R$:${product.price || 'N/A'}</td>
-                                <td class="td">${product.quantity || 'N/A'}</td>
-                                <td class="td td-buttons">
-                                    <button class="edit-button button button-edit" onclick="openEditPrompt(${JSON.stringify(product)})"><img src="/imgs/editar.png" alt="editar" class="edit-image"></button>
-                                    <button class="delete-button button button-delete" data-id="${product.id}"><img src="/imgs/lixeira2.png" alt="lixeira" class="delete-image"></button>
-                                </td>
-                            `;
-                            tableBody.appendChild(row);
-                        });
-
-                    })
-                    .catch(error => {
-                        console.error('Erro ao buscar produtos:', error);
-                    });
-            }
-
-            // Chamar a função para buscar e exibir os produtos ao carregar a página
-            fetchProducts();
-        });
-    </script>
+    <script src="/js/list-products.js"></script>
 </body>
-
 </html>

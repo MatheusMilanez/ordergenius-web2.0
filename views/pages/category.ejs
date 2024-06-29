@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/product-user.css">
+    <link rel="shortcut icon" type="menu.ico" href="/imgs/logo icone comida e bebida.png" />
+    <title><%= category.charAt(0).toUpperCase() + category.slice(1) %></title>
+</head>
+<body>
+    <form action="#">
+        <div class="div_bt_sair">
+            <button class="botao_sair" id="botao_sair">
+                <img class="seta_sair" id="seta_sair" src="/imgs/Voltar.png">
+            </button>
+        </div> 
+        <div class="h2">
+            <h2 class="h2_categoria" id="category-title"><%= category.charAt(0).toUpperCase() + category.slice(1) %></h2>
+        </div>
+        <div>
+            <section id="product-list">
+                <% data.forEach(product => { %>
+                    <div class="div_total">
+                        <img src="<%= product.imageUrl %>" alt="<%= product.titleProducts %>">
+                        <div class="label-group">
+                            <small><%= product.titleProducts %></small>
+                        </div>
+                        <div class="button-group">
+                            <button><label for="adicionar">-</label></button>
+                            <p class="n_itens">n°</p>
+                            <button><label for="remover">+</label></button>
+                        </div>
+                    </div>
+                <% }) %>
+            </section>
+        </div>
+    </form>
+</body>
+</html>
