@@ -148,14 +148,55 @@ async function defineRouteTables() {
             });
 
             // Rota para a página do carrinho de compras
-            router.get(`/${idTable}/cart`, async (req, res) => {
+            router.get('/:idTable/cart', async (req, res) => {
+                const { idTable } = req.params;
+
                 try {
-                    const response = await axios.get(`http://localhost:3000/cart/table/${idTable}`);
-                    const data = response.data;
-                    res.render('pages/cart', { data, idTable });
+                    // Buscar os itens do carrinho para a mesa especificada
+                    const cartResponse = await axios.get(`http://localhost:3000/cart/table/${idTable}`);
+                    const cartData = cartResponse.data;
+
+                    // Buscar todos os produtos
+                    const productsResponse = await axios.get('http://localhost:3000/products');
+                    const productsData = productsResponse.data;
+
+                    // Cruzar dados dos produtos com os itens do carrinho
+                    const cartWithProductNames = cartData.map(item => {
+                        const product = productsData.find(p => p.id === item.productId);
+                        return {
+                            ...item,
+                            productName: product ? product.titleProducts : 'Produto não disponível'
+                        };
+                    });
+
+                    console.log("idTable:", idTable);
+                    console.log("Cart Data:", cartData);
+                    console.log("Products Data:", productsData);
+                    console.log("Cart with Product Names:", cartWithProductNames);
+
+                    res.render('pages/cart', { data: cartWithProductNames, idTable });
                 } catch (error) {
                     console.log(error);
                     res.render('pages/cart', { data: [], idTable });
+                }
+            });
+
+            // Rota para deletar um item do carrinho
+            router.delete('/cart/:idTable/item/:itemId', async (req, res) => {
+                const { idTable, itemId } = req.params;
+
+                try {
+                    // Faça a requisição para deletar o item do carrinho
+                    const response = await axios.delete(`http://localhost:3000/cart/table/${idTable}/item/${itemId}`);
+                    
+                    if (response.status === 200) {
+                        res.json({ success: true });
+                    } else {
+                        res.json({ success: false });
+                    }
+                } catch (error) {
+                    console.error(error);
+                    res.json({ success: false });
                 }
             });
 
