@@ -10,8 +10,8 @@
 <body>
     <form action="#">
         <div class="div_bt_sair">
-            <button class="botao_sair" id="botao_sair">
-                <img class="seta_sair" id="seta_sair" src="/imgs/Voltar.png">
+            <button type="button" class="botao_sair" id="botao_sair">
+                <img class="seta_sair" id="seta_sair" src="/imgs/Voltar.png" alt="imagem">
             </button>
         </div> 
         <div class="h2">
@@ -24,16 +24,58 @@
                         <img src="<%= product.imageUrl %>" alt="<%= product.titleProducts %>">
                         <div class="label-group">
                             <small><%= product.titleProducts %></small>
+                            <p>Preço: <%= product.price %></p>
                         </div>
                         <div class="button-group">
-                            <button><label for="adicionar">-</label></button>
-                            <p class="n_itens">n°</p>
-                            <button><label for="remover">+</label></button>
+                            <button type="button" onclick="updateCart('<%= product.id %>', -1)">-</button>
+                            <p class="n_itens" id="quantity-<%= product.id %>">0</p>
+                            <button type="button" onclick="updateCart('<%= product.id %>', 1)">+</button>
                         </div>
                     </div>
                 <% }) %>
             </section>
         </div>
     </form>
+
+    <script>
+        document.getElementById('seta_sair').addEventListener('click', function() {
+            history.back();
+        });
+
+        async function updateCart(productId, quantityChange) {
+            const idTable = window.location.pathname.split('/')[1];
+            const quantityElement = document.getElementById(`quantity-${productId}`);
+            let currentQuantity = parseInt(quantityElement.innerText);
+
+            try {
+                const response = await fetch('http://localhost:3000/cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        idTable: idTable,
+                        productId: productId,
+                        quantity: quantityChange
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    currentQuantity += quantityChange;
+                    if (currentQuantity < 0) {
+                        currentQuantity = 0;
+                    }
+                    quantityElement.innerText = currentQuantity;
+                } else {
+                    alert('Erro ao atualizar o carrinho.');
+                }
+            } catch (error) {
+                console.error('Erro ao atualizar o carrinho:', error);
+                alert('Erro ao atualizar o carrinho.');
+            }
+        }
+    </script>
 </body>
 </html>

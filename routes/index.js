@@ -18,7 +18,6 @@ async function getTables() {
 async function getOrders(idTable) {
     try {
         const response = await axios.get(`http://localhost:3000/tables/${idTable}/orders`);
-        console.log("getOrders:", response.data.orders);
         return response.data.orders;
     } catch (error) {
         console.error(`Erro ao obter os pedidos para a mesa ${idTable}:`, error);
@@ -141,13 +140,27 @@ async function defineRouteTables() {
             router.get(`/${idTable}/menu-commands`, async (req, res) => {
                 try {
                     const orders = await getOrders(idTable);
-                    console.log("Lista de pedidos", orders);
                     res.render('pages/menu-commands', { orders, idTable });
                 } catch (error) {
                     console.log(error);
                     res.render('pages/menu-commands', { orders: [], idTable });
                 }
             });
+
+            // Rota para a página do carrinho de compras
+            router.get(`/${idTable}/cart`, async (req, res) => {
+                try {
+                    const response = await axios.get(`http://localhost:3000/cart/table/${idTable}`);
+                    const data = response.data;
+                    res.render('pages/cart', { data, idTable });
+                } catch (error) {
+                    console.log(error);
+                    res.render('pages/cart', { data: [], idTable });
+                }
+            });
+
+            // Chamada inicial para definir as rotas das categorias
+            defineRouteCategories(idTable);
         } else {
             console.log("Não existe essa mesa");
         }
@@ -166,21 +179,17 @@ async function getCategories() {
 }
 
 // Função para definir as rotas das categorias dinamicamente
-async function defineRouteCategories() {
+async function defineRouteCategories(idTable) {
     const categories = await getCategories();
 
     categories.forEach(category => {
         if (category) {
             const categoryRoute = category.toLowerCase().replace(/\s+/g, '-');
-            console.log("HEREEE:",categoryRoute);
-            console.log("2222222222:",category)
 
-            router.get(`/${categoryRoute}`, async (req, res) => {
+            router.get(`/${idTable}/${categoryRoute}`, async (req, res) => {
                 try {
                     const response = await axios.get(`http://localhost:3000/products/category/${category}`);
-                    console.log("RESPONSAVEL:", response);
                     const data = response.data;
-                    console.log()
                     res.render('pages/category', { category, data });
                 } catch (error) {
                     console.log(error);
@@ -190,9 +199,6 @@ async function defineRouteCategories() {
         }
     });
 }
-
-// Chamada inicial para definir as rotas das categorias
-defineRouteCategories();
 
 // Chamada inicial para definir as rotas
 defineRouteTables();

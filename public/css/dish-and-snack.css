@@ -17,6 +17,10 @@ form {
     width: 380px;
     background-color: transparent;
     border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 form div  {
@@ -33,6 +37,7 @@ label {
     color: white;
 }
 
+
 button {
     width: 214px;
     height: 68px;
@@ -48,6 +53,36 @@ button {
     background-color:#B1131F;
     color: black;
     cursor: pointer;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vh;
+}
+
+.botao_sair {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+}
+
+.seta_sair {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: left;
+}
+.div_bt_sair {
+width: 100%;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
 }
 
 
@@ -92,14 +127,24 @@ button {
         width: 260px;
     }
 
-    button {
-        width: 160px;
-        height: 50px;
-        font-size: small;
+
+    
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    form {
+        width: 100%;
     }
 
-    label {
-        font-size: 14px;
-        margin-top: 16px;
-    }
 }
+
+
+/* Estilos para telas maiores */
+@media (min-width: 1024px) {
+    form {
+        width: 40%;
+    }
+
+}
+

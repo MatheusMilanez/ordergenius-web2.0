@@ -1,13 +1,11 @@
+<!-- menu-commands.html -->
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/menu-commands.css">
-    
 </head>
-
 <body>
     <div class="number_table">
         <h2>Comanda n° <%= idTable %></h2>
@@ -20,16 +18,10 @@
         </div>
         <div class="list-orders">
             <% if (Array.isArray(orders) && orders.length > 0) { %>
-                <% orders.map(order => { %>
+                <% orders.forEach(order => { %>
                     <ul class="grid-command price">
                         <li class="li snack"><%= order.titleProduct %></li>
-                        <li class="li price">
-                            <% if (order.price !== undefined) { %>
-                                R$:<%= order.price.toFixed(2) %>
-                            <% } else { %>
-                                Preço não disponível
-                            <% } %>
-                        </li>
+                        <li class="li price">R$ <%= order.price.toFixed(2) %></li>
                         <li class="li quantity"><%= order.quantity %></li>
                     </ul>
                 <% }) %>
@@ -38,7 +30,12 @@
             <% } %>
         </div>
     </section>
-    <button onclick="location.href='/<%= idTable %>/'">Retornar</button>
+    <button type="button" id="retornarID" onclick="location.href='/'">Retornar</button>
+    <script>
+        const idTable = window.location.pathname.split('/')[1];
+        document.getElementById('retornarID').addEventListener('click', function(){
+            window.location.href = `/${idTable}`
+        })
+    </script>
 </body>
-
 </html>

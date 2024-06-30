@@ -1,0 +1,57 @@
+<!-- cart.ejs -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/cart.css">
+    <link rel="shortcut icon" type="menu.ico" href="/imgs/logo icone comida e bebida.png" />
+    <title>Carrinho de Compras</title>
+</head>
+<body>
+    <div class="div_bt_sair">
+        <button type="button" class="botao_sair" id="botao_sair">
+            <img class="seta_sair" id="seta_sair" src="/imgs/Voltar.png" alt="imagem">
+        </button>
+    </div>
+    <h1>Carrinho de Compras</h1>
+    <div id="cart-items">
+        <% if (data.length > 0) { %>
+            <% data.forEach(item => { %>
+                <div class="cart-item">
+                    <p>Produto: <%= item.products && item.products.titleProducts ? item.products.titleProducts : 'Produto não disponível' %></p>
+                    <p>Quantidade: <%= item.quantity %></p>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>Seu carrinho está vazio.</p>
+        <% } %>
+    </div>
+    <button class="finalize-order" id="finalize-order" onclick="finalizeOrder()">Finalizar Pedido</button>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.getElementById('seta_sair').addEventListener('click', function() {
+            history.back();
+        });
+
+        async function finalizeOrder() {
+            const idTable = window.location.pathname.split('/')[1];
+            try {
+                const response = await axios.post(`http://localhost:3000/orders/from-cart/${idTable}`);
+
+                console.log("HERE:",response.data.success)
+                if (response.data.success) {
+                    alert('Pedido finalizado com sucesso!');
+                    // Redirecionar para a página de comandos com o ID da mesa
+                    window.location.href = `/${idTable}/menu-commands`;
+                } else {
+                    alert('Erro ao finalizar o pedido.');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Erro ao finalizar o pedido.');
+            }
+        }
+    </script>
+</body>
+</html>

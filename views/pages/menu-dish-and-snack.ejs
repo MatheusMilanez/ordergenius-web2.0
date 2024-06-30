@@ -5,13 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/dish-and-snack.css">
     <link rel="shortcut icon" type="menu.ico" href="/imgs/logo icone comida e bebida.png" />
-    <title>Pratos e petiscos</title>
+    <title>Lanches e Bebidas</title>
 </head>
 
 <body>
     <form action="#">
+        <div class="div_bt_sair">
+            <button type="button" class="botao_sair" id="botao_sair">
+                <img class="seta_sair" id="seta_sair" src="/imgs/Voltar.png" alt="imagem">
+            </button>
+
+            <button type="button" class="botao_sair" id="carrinho">
+                <img class="seta_sair" id="Carrinho" src="/imgs/carrinho.png" alt="imagem">
+            </button>
+        </div> 
         <div class="div_prat_e_peti">
-            <h2>Pratos e petiscos</h2>
+            <h2>Lanches e Bebidas</h2>
         </div>
         <div>
             <section id="category-buttons">
@@ -21,11 +30,23 @@
     </form>
 
     <script>
+        document.getElementById('seta_sair').addEventListener('click', function(){
+            history.back();
+        });
+
+        document.getElementById('carrinho').addEventListener('click', function() {
+            const idTable = window.location.pathname.split('/')[1];
+            window.location.href = `/${idTable}/cart`;
+        });
+    </script>
+
+    <script>
         // Função para carregar categorias e criar botões dinamicamente
         async function loadCategories() {
             try {
                 const response = await fetch('http://localhost:3000/categories');
                 const categories = await response.json();
+                const idTable = window.location.pathname.split('/')[1];
 
                 const container = document.getElementById('category-buttons');
 
@@ -35,7 +56,7 @@
                     button.className = `botao_${categoryRoute}`;
                     button.type = 'button';
                     button.onclick = () => {
-                        window.location.href = `/${categoryRoute}`;
+                        window.location.href = `/${idTable}/${categoryRoute}`;
                     };
 
                     const label = document.createElement('label');
