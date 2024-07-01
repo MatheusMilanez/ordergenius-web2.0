@@ -1,4 +1,5 @@
-body{
+/* menu-commands.css */
+body {
     width: 100%;
     height: 100vh;
     display: flex;
@@ -6,35 +7,85 @@ body{
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+    font-family: 'Arial', sans-serif; /* Utilizando uma fonte mais comum */
+    background-color: #f0f0f0; /* Cor de fundo suave */
 }
 
-.grid-command-section{
-    display: flex;
-    flex-direction: column;
-
+.number_table {
+    margin-bottom: 20px;
 }
 
-.grid-command{
-    width: 300px;
+.grid-command-section {
+    width: 90%;
+    max-width: 800px; /* Limitando a largura máxima para melhor legibilidade */
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Evita que conteúdos grandes quebrem o layout */
+}
+
+.grid-command {
     display: flex;
     justify-content: space-between;
+    padding: 10px;
+    background-color: #B1131F;
+    color: #fff;
+    font-weight: bold;
 }
 
-.list-orders{
+.list-orders {
     height: 300px;
     overflow-y: auto;
+    padding: 10px;
 }
 
-.li{
-    margin: 10px 0;
+ul.grid-command {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd; /* Linha separadora entre pedidos */
 }
 
-.snack{
-    max-width: 18ch;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+li {
+    list-style-type: none; /* Removendo os marcadores de lista */
+    flex: 1; /* Distribui igualmente os itens da lista */
+    padding: 5px;
 }
-.price{
 
+li.quantity {
+    flex: 0.5; /* Menor espaço para quantidade */
+    text-align: center;
+}
+
+li.snack {
+    flex: 2; /* Mais espaço para o nome do produto */
+}
+
+li.price {
+    flex: 1; /* Espaço para o preço */
+    text-align: right;
+}
+
+button {
+    width: 80%;
+    max-width: 300px; /* Limita a largura máxima do botão */
+    height: 50px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 20px auto;
+    background-color: #B1131F;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #7f0c15; /* Cor mais escura ao passar o mouse */
 }

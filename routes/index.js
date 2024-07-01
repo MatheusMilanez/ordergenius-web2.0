@@ -91,6 +91,16 @@ router.get('/qrcode-adm', (req, res) => {
     }
 });
 
+router.get('/kitchen', (req, res) => {
+    try {
+        res.render('pages/kitchen');
+    } catch (error) {
+        console.log(error);
+        res.render('pages/kitchen');
+    }
+});
+
+
 // Função para definir as rotas das mesas dinamicamente
 async function defineRouteTables() {
     const tables = await getTables();

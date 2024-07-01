@@ -1,3 +1,4 @@
+/* cart.css */
 
 /* Estilos gerais */
 body {
@@ -7,44 +8,70 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 0;
+    padding: 0;
 }
 
-h2 {
+h1 {
     color: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 0px;
-    padding:0px;
-    margin: 0px;
-    
+    margin-top: 20px;
 }
 
-form {
-    height: 100vh;
-    width: 90%;
-    background-color: transparent;
-    border-radius: 40px;
+.div_bt_sair {
+    align-self: flex-start;
+    margin-top: 10px;
+    margin-left: 10px;
 }
 
 .botao_sair {
-    width: 350px;
+    width: 40px;
     height: 40px;
-    display: flex;
-    align-items: center;
     background: none;
     border: none;
+    cursor: pointer;
 }
 
 .seta_sair {
     width: 30px;
     height: 30px;
-    display: flex;
 }
 
+#cart-items {
+    width: 90%;
+    max-width: 800px; /* Limita a largura máxima para melhor legibilidade */
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.cart-item p {
+    margin: 0;
+}
+
+.cart-item button {
+    background-color: #B1131F;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+}
 
 .finalize-order {
-    width: 320px;
+    width: 90%;
+    max-width: 400px;
     height: 68px;
     border: none;
     border-radius: 40px;
@@ -56,24 +83,25 @@ form {
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin: 10px;
+    margin: 20px 0;
     background-color: #B1131F;
     color: white;
     cursor: pointer;
-    
 }
-
 
 /* Estilos responsivos */
 @media (max-width: 768px) {
-    form {
+    #cart-items {
         width: 100%;
     }
 }
 
-
 /* Estilos para telas maiores */
 @media (min-width: 1024px) {
+    body {
+        justify-content: center;
+    }
+
     form {
         width: 40%;
     }

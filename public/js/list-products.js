@@ -1,10 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const tableBody = document.querySelector('#tabela_produtos tbody');
 
-    // Função para buscar e exibir os produtos na tabela
-    const garfo = "/imgs/garfo e faca.png";
-    const copo = "/imgs/bebidas.png";
-
+  
     function fetchProducts() {
         fetch('http://localhost:3000/products')
             .then(response => {
@@ -36,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td class="td">
-                <img src="${product.foodStatus.toUpperCase() == "BEBIDA" ? copo : garfo}" alt="${product.titleProducts}" class="product-image">
+                <img src="/imgs/lancheEbebida.png" alt="${product.titleProducts}" class="product-image">
             </td>
             <td class="td">${product.titleProducts.toUpperCase() || 'N/A'}</td>
             <td class="td">${product.foodStatus.toUpperCase() || 'N/A'}</td>

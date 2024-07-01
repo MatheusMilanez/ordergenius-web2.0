@@ -11,18 +11,18 @@
         <h2>Comanda n° <%= idTable %></h2>
     </div>
     <section class="grid-command-section">
-        <div class="grid-command item">
-            <h3>Produtos</h3>
-            <h3>Preço (unidade)</h3>
+        <div class="grid-command">
             <h3>Quantidade</h3>
+            <h3>Produtos</h3>
+            <h3>Preço <br> (unidade)</h3>   
         </div>
         <div class="list-orders">
             <% if (Array.isArray(orders) && orders.length > 0) { %>
                 <% orders.forEach(order => { %>
-                    <ul class="grid-command price">
-                        <li class="li snack"><%= order.titleProduct %></li>
-                        <li class="li price">R$ <%= order.price.toFixed(2) %></li>
-                        <li class="li quantity"><%= order.quantity %></li>
+                    <ul class="grid-command">
+                        <li class="quantity"><%= order.quantity %></li>
+                        <li class="snack"><%= order.titleProduct %></li>
+                        <li class="price">R$ <%= order.price.toFixed(2) %></li>
                     </ul>
                 <% }) %>
             <% } else { %>
@@ -30,12 +30,11 @@
             <% } %>
         </div>
     </section>
-    <button type="button" id="retornarID" onclick="location.href='/'">Retornar</button>
+    <button type="button" id="retornarID">Retornar</button>
+</body>
     <script>
-        const idTable = window.location.pathname.split('/')[1];
-        document.getElementById('retornarID').addEventListener('click', function(){
-            window.location.href = `/${idTable}`
+        document.getElementById('retornarID').addEventListener('click',function(){
+            history.back();
         })
     </script>
-</body>
 </html>

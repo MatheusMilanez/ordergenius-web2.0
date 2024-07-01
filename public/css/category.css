@@ -1,0 +1,153 @@
+/* category.css */
+
+/* Estilos gerais */
+body {
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    width: 90%;
+    max-width: 1200px; /* Limita a largura máxima para melhor legibilidade */
+    background-color: transparent;
+    border-radius: 40px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #333;
+    text-align: center;
+}
+
+.div_bt_sair {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.botao_sair {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.seta_sair {
+    width: 30px;
+    height: 30px;
+}
+
+#category-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+#product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.div_total {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.div_total img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+.label-group {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.label-group small {
+    color: #888;
+}
+
+.button-group {
+    display: flex;
+    align-items: center;
+}
+
+.button-group button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #B1131F;
+    color: #fff;
+    font-size: 1rem;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.button-group p {
+    margin: 0 10px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.n_itens {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+/* Estilos responsivos */
+@media (max-width: 1024px) {
+    .div_total img {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+@media (max-width: 768px) {
+    form {
+        padding: 10px;
+    }
+
+    .div_total img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .button-group button {
+        width: 25px;
+        height: 25px;
+        font-size: 0.8rem;
+    }
+
+    .n_itens {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .div_total img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .button-group button {
+        width: 20px;
+        height: 20px;
+        font-size: 0.7rem;
+    }
+
+    .n_itens {
+        font-size: 0.8rem;
+    }
+}

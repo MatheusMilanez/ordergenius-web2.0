@@ -10,7 +10,7 @@
 <body>
     <div class="div_bt_sair">
         <button type="button" class="botao_sair" id="botao_sair">
-            <img class="seta_sair" id="seta_sair" src="/imgs/Voltar.png" alt="imagem">
+            <img class="seta_sair" id="seta_sair" src="/imgs/Voltar.png" alt="Voltar">
         </button>
     </div>
     <h1>Carrinho de Compras</h1>
@@ -52,7 +52,7 @@
         async function finalizeOrder() {
             const idTable = window.location.pathname.split('/')[1]; 
             try {
-                const response = await axios.post(`http://localhost:3000/cart/finalize/${idTable}`);
+                const response = await axios.post(`http://localhost:3000/orders/from-cart/${idTable}`);
                 if (response.data.success) {
                     alert('Pedido finalizado com sucesso!');
                     // Redirecionar para a página de comandos com o ID da mesa

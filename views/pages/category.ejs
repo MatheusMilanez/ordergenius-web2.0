@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/product-user.css">
+    <link rel="stylesheet" href="/css/category.css">
     <link rel="shortcut icon" type="menu.ico" href="/imgs/logo icone comida e bebida.png" />
     <title><%= category.charAt(0).toUpperCase() + category.slice(1) %></title>
 </head>
@@ -21,7 +21,7 @@
             <section id="product-list">
                 <% data.forEach(product => { %>
                     <div class="div_total">
-                        <img src="<%= product.imageUrl %>" alt="<%= product.titleProducts %>">
+                        <img src="/imgs/lancheEbebida.png" alt="<%= product.titleProducts %>" class="img">
                         <div class="label-group">
                             <small><%= product.titleProducts %></small>
                             <p>Preço: <%= product.price %></p>

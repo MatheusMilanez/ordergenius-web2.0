@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/cart.css">
+    <link rel="stylesheet" href="/css/kitchen.css">
+    <link rel="shortcut icon" type="menu.ico" href="/imgs/logo icone comida e bebida.png" />
+    <title>Cozinha</title>
+</head>
+<body>
+    <div class="div_bt_sair">
+        <button type="button" class="botao_sair" id="botao_sair">
+            <img class="seta_sair" id="seta_sair" src="/imgs/Voltar.png" alt="imagem">
+        </button>
+    </div>
+    <h1>Cozinha</h1>
+    <div id="orders-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('seta_sair').addEventListener('click', function () {
+                history.back();
+            });
+
+            async function fetchOrders() {
+                try {
+                    const response = await fetch('http://localhost:3000/orders');
+                    const orders = await response.json();
+                    const ordersContainer = document.getElementById('orders-container');
+                    ordersContainer.innerHTML = ''; // Limpa o container antes de adicionar novos pedidos
+
+                    orders.forEach(order => {
+                        if (!order.done) { // Apenas exibe pedidos não entregues
+                            const orderDiv = document.createElement('div');
+                            orderDiv.classList.add('div_total');
+                            orderDiv.innerHTML = `
+                                <div class="label-group">
+                                    <div>
+                                        <p>Mesa: ${order.idTable}</p>
+                                        <p>Numero do Pedido: ${order.idOrder}</p>
+                                    </div>
+                                    <div>
+                                        <small>Produto: ${order.titleProduct}</small>
+                                        <p>Quantidade: ${order.quantity}</p>
+                                    </div>
+                                </div>
+                                <div class="button-group">
+                                    <button type="button" class="pedido_fechado" data-id="${order.idOrder}">Pedido entregue</button>
+                                </div>
+                            `;
+                            ordersContainer.prepend(orderDiv); // Adiciona ao topo do container
+                        }
+                    });
+
+                    // Adiciona event listener aos novos botões de "Pedido entregue"
+                    document.querySelectorAll('.pedido_fechado').forEach(button => {
+                        button.addEventListener('click', async function () {
+                            const orderId = this.dataset.id;
+                            if (confirm('Tem certeza que deseja finalizar o pedido?')) {
+                                try {
+                                    const response = await fetch(`http://localhost:3000/orders/${orderId}`, {
+                                        method: 'PUT',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({ done: true })
+                                    });
+
+                                    if (response.ok) {
+                                        this.closest('.div_total').remove();
+                                    } else {
+                                        console.error('Erro ao atualizar pedido:', response.statusText);
+                                    }
+                                } catch (error) {
+                                    console.error('Erro ao atualizar pedido:', error);
+                                }
+                            }
+                        });
+                    });
+                } catch (error) {
+                    console.error('Erro ao buscar pedidos:', error);
+                }
+            }
+
+            // Chama a função ao carregar a página
+            fetchOrders();
+        });
+    </script>
+</body>
+</html>

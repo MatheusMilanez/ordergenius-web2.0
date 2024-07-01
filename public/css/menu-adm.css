@@ -1,3 +1,4 @@
+/* Estilos gerais */
 body {
     height: 100vh;
     font-family: Arial, sans-serif;
@@ -7,7 +8,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
 }
 
 h1 {
@@ -92,15 +92,15 @@ button:hover {
     transform: scale(1.1); /* Efeito de escala ao passar o mouse */
 }
 
-.img-cifra{
+.img-cifra {
     width: 100px;
     height: auto;
 }
 
-.text-cifra{
-   display: block;
-   position: relative;
-   right: 25px;
+.text-cifra {
+    display: block;
+    position: relative;
+    right: 25px;
 }
 
 @media (max-width: 600px) {
